@@ -1,3 +1,28 @@
+// Food images
+import samosaImg from '@/assets/food/samosa.jpg';
+import chickenTikkaImg from '@/assets/food/chicken-tikka.jpg';
+import onionBhajiImg from '@/assets/food/onion-bhaji.jpg';
+import paneerTikkaImg from '@/assets/food/paneer-tikka.jpg';
+import butterChickenImg from '@/assets/food/butter-chicken.jpg';
+import lambRoganJoshImg from '@/assets/food/lamb-rogan-josh.jpg';
+import palakPaneerImg from '@/assets/food/palak-paneer.jpg';
+import chickenVindalooImg from '@/assets/food/chicken-vindaloo.jpg';
+import dalMakhaniImg from '@/assets/food/dal-makhani.jpg';
+import chanaMasalaImg from '@/assets/food/chana-masala.jpg';
+import chickenBiryaniImg from '@/assets/food/chicken-biryani.jpg';
+import lambBiryaniImg from '@/assets/food/lamb-biryani.jpg';
+import vegetableBiryaniImg from '@/assets/food/vegetable-biryani.jpg';
+import garlicNaanImg from '@/assets/food/garlic-naan.jpg';
+import plainNaanImg from '@/assets/food/plain-naan.jpg';
+import cheeseNaanImg from '@/assets/food/cheese-naan.jpg';
+import rotiImg from '@/assets/food/roti.jpg';
+import mangoLassiImg from '@/assets/food/mango-lassi.jpg';
+import sweetLassiImg from '@/assets/food/sweet-lassi.jpg';
+import masalaChaiImg from '@/assets/food/masala-chai.jpg';
+import gulabJamunImg from '@/assets/food/gulab-jamun.jpg';
+import kheerImg from '@/assets/food/kheer.jpg';
+import mangoKulfiImg from '@/assets/food/mango-kulfi.jpg';
+
 export interface MenuItem {
   id: string;
   categoryId: string;
@@ -37,7 +62,7 @@ export const menuItems: MenuItem[] = [
     name: 'Samosa',
     description: 'Crispy pastry filled with spiced potatoes and peas, served with mint chutney',
     price: 5.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: samosaImg,
     isVegetarian: true,
     isVegan: true,
     isGlutenFree: false,
@@ -50,7 +75,7 @@ export const menuItems: MenuItem[] = [
     name: 'Chicken Tikka',
     description: 'Tender chicken pieces marinated in yogurt and spices, grilled in tandoor',
     price: 8.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: chickenTikkaImg,
     isVegetarian: false,
     isVegan: false,
     isGlutenFree: true,
@@ -63,7 +88,7 @@ export const menuItems: MenuItem[] = [
     name: 'Onion Bhaji',
     description: 'Crispy onion fritters with aromatic spices and herbs',
     price: 5.50,
-    imageUrl: '/placeholder.svg',
+    imageUrl: onionBhajiImg,
     isVegetarian: true,
     isVegan: true,
     isGlutenFree: false,
@@ -76,7 +101,7 @@ export const menuItems: MenuItem[] = [
     name: 'Paneer Tikka',
     description: 'Grilled cottage cheese cubes with bell peppers and Indian spices',
     price: 7.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: paneerTikkaImg,
     isVegetarian: true,
     isVegan: false,
     isGlutenFree: true,
@@ -90,7 +115,7 @@ export const menuItems: MenuItem[] = [
     name: 'Butter Chicken',
     description: 'Tender chicken in creamy tomato sauce with aromatic spices',
     price: 16.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: butterChickenImg,
     isVegetarian: false,
     isVegan: false,
     isGlutenFree: true,
@@ -103,7 +128,7 @@ export const menuItems: MenuItem[] = [
     name: 'Lamb Rogan Josh',
     description: 'Slow-cooked lamb in rich Kashmiri spices and yogurt gravy',
     price: 18.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: lambRoganJoshImg,
     isVegetarian: false,
     isVegan: false,
     isGlutenFree: true,
@@ -116,7 +141,7 @@ export const menuItems: MenuItem[] = [
     name: 'Palak Paneer',
     description: 'Cottage cheese cubes in creamy spinach gravy with garlic',
     price: 14.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: palakPaneerImg,
     isVegetarian: true,
     isVegan: false,
     isGlutenFree: true,
@@ -129,7 +154,7 @@ export const menuItems: MenuItem[] = [
     name: 'Chicken Vindaloo',
     description: 'Fiery Goan curry with potatoes and tangy vinegar notes',
     price: 16.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: chickenVindalooImg,
     isVegetarian: false,
     isVegan: false,
     isGlutenFree: true,
@@ -142,7 +167,7 @@ export const menuItems: MenuItem[] = [
     name: 'Dal Makhani',
     description: 'Creamy black lentils slow-cooked overnight with butter and cream',
     price: 13.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: dalMakhaniImg,
     isVegetarian: true,
     isVegan: false,
     isGlutenFree: true,
@@ -155,7 +180,7 @@ export const menuItems: MenuItem[] = [
     name: 'Chana Masala',
     description: 'Spiced chickpeas in tangy tomato sauce with aromatic spices',
     price: 12.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: chanaMasalaImg,
     isVegetarian: true,
     isVegan: true,
     isGlutenFree: true,
@@ -169,7 +194,7 @@ export const menuItems: MenuItem[] = [
     name: 'Chicken Biryani',
     description: 'Fragrant basmati rice layered with spiced chicken and saffron',
     price: 17.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: chickenBiryaniImg,
     isVegetarian: false,
     isVegan: false,
     isGlutenFree: true,
@@ -182,7 +207,7 @@ export const menuItems: MenuItem[] = [
     name: 'Lamb Biryani',
     description: 'Royal Hyderabadi-style biryani with tender lamb and aromatic spices',
     price: 19.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: lambBiryaniImg,
     isVegetarian: false,
     isVegan: false,
     isGlutenFree: true,
@@ -195,7 +220,7 @@ export const menuItems: MenuItem[] = [
     name: 'Vegetable Biryani',
     description: 'Basmati rice with seasonal vegetables, nuts, and saffron',
     price: 14.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: vegetableBiryaniImg,
     isVegetarian: true,
     isVegan: true,
     isGlutenFree: true,
@@ -209,7 +234,7 @@ export const menuItems: MenuItem[] = [
     name: 'Garlic Naan',
     description: 'Fluffy naan bread topped with fresh garlic and butter',
     price: 3.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: garlicNaanImg,
     isVegetarian: true,
     isVegan: false,
     isGlutenFree: false,
@@ -222,7 +247,7 @@ export const menuItems: MenuItem[] = [
     name: 'Plain Naan',
     description: 'Traditional clay oven-baked bread',
     price: 2.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: plainNaanImg,
     isVegetarian: true,
     isVegan: false,
     isGlutenFree: false,
@@ -235,7 +260,7 @@ export const menuItems: MenuItem[] = [
     name: 'Cheese Naan',
     description: 'Naan stuffed with melted mozzarella cheese',
     price: 4.50,
-    imageUrl: '/placeholder.svg',
+    imageUrl: cheeseNaanImg,
     isVegetarian: true,
     isVegan: false,
     isGlutenFree: false,
@@ -248,7 +273,7 @@ export const menuItems: MenuItem[] = [
     name: 'Roti',
     description: 'Whole wheat flatbread, healthy and light',
     price: 2.50,
-    imageUrl: '/placeholder.svg',
+    imageUrl: rotiImg,
     isVegetarian: true,
     isVegan: true,
     isGlutenFree: false,
@@ -262,7 +287,7 @@ export const menuItems: MenuItem[] = [
     name: 'Mango Lassi',
     description: 'Refreshing yogurt drink blended with sweet Alphonso mango',
     price: 4.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: mangoLassiImg,
     isVegetarian: true,
     isVegan: false,
     isGlutenFree: true,
@@ -275,7 +300,7 @@ export const menuItems: MenuItem[] = [
     name: 'Sweet Lassi',
     description: 'Traditional sweet yogurt drink with cardamom',
     price: 4.50,
-    imageUrl: '/placeholder.svg',
+    imageUrl: sweetLassiImg,
     isVegetarian: true,
     isVegan: false,
     isGlutenFree: true,
@@ -288,7 +313,7 @@ export const menuItems: MenuItem[] = [
     name: 'Masala Chai',
     description: 'Spiced Indian tea with milk, ginger, and cardamom',
     price: 3.50,
-    imageUrl: '/placeholder.svg',
+    imageUrl: masalaChaiImg,
     isVegetarian: true,
     isVegan: false,
     isGlutenFree: true,
@@ -302,7 +327,7 @@ export const menuItems: MenuItem[] = [
     name: 'Gulab Jamun',
     description: 'Soft milk dumplings soaked in rose-flavored sugar syrup',
     price: 5.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: gulabJamunImg,
     isVegetarian: true,
     isVegan: false,
     isGlutenFree: false,
@@ -315,7 +340,7 @@ export const menuItems: MenuItem[] = [
     name: 'Kheer',
     description: 'Creamy rice pudding with cardamom, almonds, and saffron',
     price: 5.50,
-    imageUrl: '/placeholder.svg',
+    imageUrl: kheerImg,
     isVegetarian: true,
     isVegan: false,
     isGlutenFree: true,
@@ -328,7 +353,7 @@ export const menuItems: MenuItem[] = [
     name: 'Mango Kulfi',
     description: 'Traditional Indian ice cream with rich mango flavor',
     price: 5.95,
-    imageUrl: '/placeholder.svg',
+    imageUrl: mangoKulfiImg,
     isVegetarian: true,
     isVegan: false,
     isGlutenFree: true,
