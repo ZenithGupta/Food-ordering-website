@@ -1,24 +1,17 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Sparkles } from 'lucide-react';
+import { ShoppingBag } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/context/CartContext';
 import { formatCurrency } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { CartItem } from './CartItem';
-import { menuItems, upsellItems } from '@/data/menu';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 
 export function CartDrawer() {
-  const { items, isOpen, setCartOpen, subtotal, addItem } = useCart();
+  const { items, isOpen, setCartOpen, subtotal } = useCart();
   const router = useRouter();
-
-  // Get upsell suggestions (items not in cart)
-  const cartItemIds = items.map(item => item.menuItem.id);
-  const suggestions = menuItems.filter(
-    item => upsellItems.includes(item.id) && !cartItemIds.includes(item.id)
-  );
 
   const handleCheckout = () => {
     setCartOpen(false);
@@ -65,51 +58,6 @@ export function CartDrawer() {
                   <CartItem key={item.menuItem.id} item={item} />
                 ))}
               </AnimatePresence>
-
-              {/* Upsell Suggestions */}
-              {suggestions.length > 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-6 p-4 glass-card border-dashed"
-                >
-                  <div className="flex items-center gap-2 mb-3">
-                    <Sparkles className="w-4 h-4 text-secondary" />
-                    <span className="text-sm font-medium">Complete your meal</span>
-                  </div>
-                  <div className="space-y-2">
-                    {suggestions.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center justify-between gap-3"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-lg bg-muted overflow-hidden">
-                            <img
-                              src={item.imageUrl}
-                              alt={item.name}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium">{item.name}</p>
-                            <p className="text-xs text-secondary">
-                              {formatCurrency(item.price)}
-                            </p>
-                          </div>
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => addItem(item)}
-                        >
-                          Add
-                        </Button>
-                      </div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
             </div>
 
             {/* Footer */}

@@ -1,9 +1,17 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { MapPin, Phone, Clock, Instagram, Facebook } from 'lucide-react';
 
 export function Footer() {
+  const pathname = usePathname();
+
+  // Hide footer on admin pages
+  if (pathname.startsWith('/admin')) {
+    return null;
+  }
+
   return (
     <footer className="bg-card/50 border-t border-border/50 mt-auto">
       <div className="container mx-auto px-4 py-12">

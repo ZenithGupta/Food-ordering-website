@@ -1,18 +1,86 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowRight, Flame, Star, Clock, Sparkles } from 'lucide-react';
 import { PageWrapper } from '@/components/layout/PageWrapper';
 import { Button } from '@/components/ui/button';
-import { menuItems } from '@/data/menu';
 import { formatCurrency } from '@/lib/utils';
 import { useCart } from '@/context/CartContext';
-
-const featuredItems = menuItems.slice(0, 3);
+import { MenuItem } from '@/lib/types';
 
 export default function HomePage() {
     const { addItem } = useCart();
+    const [featuredItems, setFeaturedItems] = useState<MenuItem[]>([]);
+
+    useEffect(() => {
+        const fetchFeatured = async () => {
+            try {
+                // Try to get featured items first (with cache busting)
+                const featuredRes = await fetch('/api/featured', { cache: 'no-store' });
+                const featuredData = await featuredRes.json();
+
+                if (Array.isArray(featuredData) && featuredData.length > 0) {
+                    // Map featured items to our format
+                    const mapped = featuredData.map((item: {
+                        id: string;
+                        category_id: string;
+                        name: string;
+                        description: string;
+                        price: number;
+                        image_url: string | null;
+                        spice_level: number;
+                        is_available: boolean;
+                    }) => ({
+                        id: item.id,
+                        categoryId: item.category_id,
+                        name: item.name,
+                        description: item.description || '',
+                        price: item.price,
+                        imageUrl: item.image_url || '',
+                        spiceLevel: item.spice_level as 0 | 1 | 2 | 3,
+                        isAvailable: item.is_available,
+                    }));
+                    setFeaturedItems(mapped);
+                    return;
+                }
+
+                // Fallback to first 3 items from menu if no featured items
+                const res = await fetch('/api/menu', { cache: 'no-store' });
+                const data = await res.json();
+                if (Array.isArray(data)) {
+                    const allItems = data.flatMap((cat: {
+                        items: Array<{
+                            id: string;
+                            category_id: string;
+                            name: string;
+                            description: string;
+                            price: number;
+                            image_url: string | null;
+                            spice_level: number;
+                            is_available: boolean;
+                        }>
+                    }) =>
+                        cat.items.map(item => ({
+                            id: item.id,
+                            categoryId: item.category_id,
+                            name: item.name,
+                            description: item.description || '',
+                            price: item.price,
+                            imageUrl: item.image_url || '',
+                            spiceLevel: item.spice_level as 0 | 1 | 2 | 3,
+                            isAvailable: item.is_available,
+                        }))
+                    );
+                    setFeaturedItems(allItems.slice(0, 3));
+                }
+            } catch (error) {
+                console.error('Error fetching featured items:', error);
+            }
+        };
+        fetchFeatured();
+    }, []);
 
     return (
         <PageWrapper>
@@ -93,17 +161,12 @@ export default function HomePage() {
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.4 }}
-                            className="flex flex-col sm:flex-row gap-5 justify-center"
+                            className="flex justify-center"
                         >
                             <Link href="/menu">
                                 <Button className="btn-gradient text-lg px-10 py-7 animate-glow-pulse group">
                                     <span>Order Now</span>
                                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                                </Button>
-                            </Link>
-                            <Link href="/menu">
-                                <Button variant="outline" className="text-lg px-10 py-7 border-border/50 hover:bg-foreground/5 backdrop-blur-sm">
-                                    Explore Menu
                                 </Button>
                             </Link>
                         </motion.div>

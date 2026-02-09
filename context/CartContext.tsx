@@ -1,7 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { MenuItem } from '@/data/menu';
+import { MenuItem } from '@/lib/types';
+
+export const MAX_QUANTITY = 999;
 
 export interface CartItem {
   menuItem: MenuItem;
@@ -15,6 +17,7 @@ interface CartState {
 
 type CartAction =
   | { type: 'ADD_ITEM'; payload: MenuItem }
+  | { type: 'ADD_ITEM_WITH_QUANTITY'; payload: { item: MenuItem; quantity: number } }
   | { type: 'REMOVE_ITEM'; payload: string }
   | { type: 'UPDATE_QUANTITY'; payload: { id: string; quantity: number } }
   | { type: 'CLEAR_CART' }
@@ -36,9 +39,10 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
       if (existingIndex >= 0) {
         const updatedItems = [...state.items];
+        const newQuantity = Math.min(updatedItems[existingIndex].quantity + 1, MAX_QUANTITY);
         updatedItems[existingIndex] = {
           ...updatedItems[existingIndex],
-          quantity: updatedItems[existingIndex].quantity + 1,
+          quantity: newQuantity,
         };
         return { ...state, items: updatedItems };
       }
@@ -46,6 +50,29 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return {
         ...state,
         items: [...state.items, { menuItem: action.payload, quantity: 1 }],
+      };
+    }
+
+    case 'ADD_ITEM_WITH_QUANTITY': {
+      const existingIndex = state.items.findIndex(
+        item => item.menuItem.id === action.payload.item.id
+      );
+
+      const quantityToAdd = Math.min(action.payload.quantity, MAX_QUANTITY);
+
+      if (existingIndex >= 0) {
+        const updatedItems = [...state.items];
+        const newQuantity = Math.min(updatedItems[existingIndex].quantity + quantityToAdd, MAX_QUANTITY);
+        updatedItems[existingIndex] = {
+          ...updatedItems[existingIndex],
+          quantity: newQuantity,
+        };
+        return { ...state, items: updatedItems };
+      }
+
+      return {
+        ...state,
+        items: [...state.items, { menuItem: action.payload.item, quantity: quantityToAdd }],
       };
     }
 
@@ -64,11 +91,13 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         };
       }
 
+      const clampedQuantity = Math.min(action.payload.quantity, MAX_QUANTITY);
+
       return {
         ...state,
         items: state.items.map(item =>
           item.menuItem.id === action.payload.id
-            ? { ...item, quantity: action.payload.quantity }
+            ? { ...item, quantity: clampedQuantity }
             : item
         ),
       };
@@ -99,6 +128,7 @@ interface CartContextType {
   items: CartItem[];
   isOpen: boolean;
   addItem: (item: MenuItem) => void;
+  addItemWithQuantity: (item: MenuItem, quantity: number) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
@@ -141,6 +171,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'ADD_ITEM', payload: item });
   };
 
+  const addItemWithQuantity = (item: MenuItem, quantity: number) => {
+    dispatch({ type: 'ADD_ITEM_WITH_QUANTITY', payload: { item, quantity } });
+  };
+
   const removeItem = (id: string) => {
     dispatch({ type: 'REMOVE_ITEM', payload: id });
   };
@@ -174,6 +208,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         items: state.items,
         isOpen: state.isOpen,
         addItem,
+        addItemWithQuantity,
         removeItem,
         updateQuantity,
         clearCart,
