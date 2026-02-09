@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 
-// Force dynamic - no caching
+// Force dynamic - no caching at any level
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 // GET public menu - categories with items (ordered by display_order)
 export async function GET() {
@@ -31,7 +32,14 @@ export async function GET() {
             items: items?.filter(item => item.category_id === category.id) || [],
         }));
 
-        return NextResponse.json(menuData);
+        // Return with explicit no-cache headers for Vercel CDN
+        return NextResponse.json(menuData, {
+            headers: {
+                'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0',
+            },
+        });
     } catch (error) {
         console.error('Error fetching menu:', error);
         return NextResponse.json(
@@ -40,3 +48,4 @@ export async function GET() {
         );
     }
 }
+

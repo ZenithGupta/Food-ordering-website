@@ -1,15 +1,7 @@
 {
   "/page": "app/page.js",
-  "/api/admin/categories/route": "app/api/admin/categories/route.js",
-  "/api/admin/items/route": "app/api/admin/items/route.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/admin/categories/reorder/route": "app/api/admin/categories/reorder/route.js",
-  "/api/featured/route": "app/api/featured/route.js",
   "/menu/page": "app/menu/page.js",
-  "/api/menu/route": "app/api/menu/route.js",
   "/checkout/page": "app/checkout/page.js",
-  "/admin/page": "app/admin/page.js",
-  "/admin/categories/page": "app/admin/categories/page.js",
-  "/admin/items/page": "app/admin/items/page.js",
-  "/admin/featured/page": "app/admin/featured/page.js"
+  "/admin/featured/page": "app/admin/featured/page.js",
+  "/admin/categories/page": "app/admin/categories/page.js"
 }
