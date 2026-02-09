@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Category } from '@/data/menu';
+import { Category } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 interface CategoryFilterProps {

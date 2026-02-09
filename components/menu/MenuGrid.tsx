@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { MenuItem } from '@/data/menu';
+import { MenuItem } from '@/lib/types';
 import { MenuCard } from './MenuCard';
 
 interface MenuGridProps {
@@ -11,7 +11,7 @@ const containerVariants = {
   show: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.08,
     },
   },
 };
@@ -35,7 +35,7 @@ export function MenuGrid({ items }: MenuGridProps) {
       variants={containerVariants}
       initial="hidden"
       animate="show"
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4"
     >
       {items.map((item) => (
         <motion.div key={item.id} variants={itemVariants}>
