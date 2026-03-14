@@ -13,6 +13,11 @@ import { MenuItem } from '@/lib/types';
 export default function HomePage() {
     const { addItem } = useCart();
     const [featuredItems, setFeaturedItems] = useState<MenuItem[]>([]);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     useEffect(() => {
         const fetchFeatured = async () => {
@@ -73,7 +78,7 @@ export default function HomePage() {
                             isAvailable: item.is_available,
                         }))
                     );
-                    setFeaturedItems(allItems.slice(0, 3));
+                    setFeaturedItems(allItems.slice(0, 6));
                 }
             } catch (error) {
                 console.error('Error fetching featured items:', error);
@@ -86,16 +91,18 @@ export default function HomePage() {
         <PageWrapper>
             {/* Hero Section with Video Background */}
             <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-                {/* Video Background */}
-                <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="video-bg"
-                >
-                    <source src="/hero-video.mp4" type="video/mp4" />
-                </video>
+                {/* Video Background - only render on client to avoid hydration mismatch */}
+                {isMounted && (
+                    <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="video-bg"
+                    >
+                        <source src="/hero-video.mp4" type="video/mp4" />
+                    </video>
+                )}
 
                 {/* Dark Overlay */}
                 <div className="absolute inset-0 bg-background/70" />
@@ -245,45 +252,45 @@ export default function HomePage() {
                         </h2>
                     </motion.div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                         {featuredItems.map((item, index) => (
                             <motion.div
                                 key={item.id}
                                 initial={{ opacity: 0, y: 40 }}
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
-                                transition={{ delay: index * 0.15 }}
-                                whileHover={{ y: -12, scale: 1.02 }}
+                                transition={{ delay: index * 0.1 }}
+                                whileHover={{ y: -4, scale: 1.02 }}
                                 className="glass-card overflow-hidden group cursor-pointer"
                             >
-                                <div className="relative h-64 overflow-hidden">
+                                <div className="relative h-36 sm:h-40 overflow-hidden">
                                     <img
                                         src={item.imageUrl}
                                         alt={item.name}
-                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/30 to-transparent" />
 
                                     {/* Floating Price Tag */}
                                     <motion.div
-                                        initial={{ opacity: 0, x: 20 }}
+                                        initial={{ opacity: 0, x: 10 }}
                                         whileInView={{ opacity: 1, x: 0 }}
-                                        className="absolute top-4 right-4 bg-secondary text-secondary-foreground px-4 py-1.5 rounded-full font-bold text-sm"
+                                        className="absolute top-2 right-2 bg-secondary text-secondary-foreground px-2 py-0.5 rounded-full font-bold text-xs"
                                     >
                                         {formatCurrency(item.price)}
                                     </motion.div>
                                 </div>
-                                <div className="p-7">
-                                    <h3 className="font-serif text-2xl font-semibold mb-2">{item.name}</h3>
-                                    <p className="text-muted-foreground text-sm mb-5 line-clamp-2 leading-relaxed">
+                                <div className="p-2 sm:p-3">
+                                    <h3 className="font-serif text-sm font-semibold mb-0.5 truncate">{item.name}</h3>
+                                    <p className="text-muted-foreground text-[10px] mb-2 line-clamp-1 leading-tight">
                                         {item.description}
                                     </p>
                                     <Button
                                         onClick={() => addItem(item)}
-                                        className="w-full btn-gradient group/btn"
+                                        className="w-full btn-gradient group/btn text-[10px] sm:text-xs py-1.5 h-7 sm:h-8"
                                     >
-                                        <span>Add to Order</span>
-                                        <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
+                                        <span>Add</span>
+                                        <ArrowRight className="w-2 h-2 ml-1" />
                                     </Button>
                                 </div>
                             </motion.div>

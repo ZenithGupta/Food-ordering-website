@@ -7,13 +7,22 @@
 -- Since we protect at the API level with middleware, 
 -- we can allow all operations here
 
+DROP POLICY IF EXISTS "Allow all operations on categories" ON categories;
 CREATE POLICY "Allow all operations on categories" 
   ON categories FOR ALL 
   USING (true)
   WITH CHECK (true);
 
+DROP POLICY IF EXISTS "Allow all operations on menu items" ON menu_items;
 CREATE POLICY "Allow all operations on menu items" 
   ON menu_items FOR ALL 
+  USING (true)
+  WITH CHECK (true);
+
+-- Also add policy for order_items to allow delete
+DROP POLICY IF EXISTS "Allow all operations on order_items" ON order_items;
+CREATE POLICY "Allow all operations on order_items" 
+  ON order_items FOR ALL 
   USING (true)
   WITH CHECK (true);
 

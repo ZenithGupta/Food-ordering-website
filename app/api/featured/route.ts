@@ -14,7 +14,7 @@ export async function GET() {
             .eq('is_featured', true)
             .eq('is_available', true)
             .order('display_order', { ascending: true })
-            .limit(3);
+            .limit(6);
 
         if (error) throw error;
 

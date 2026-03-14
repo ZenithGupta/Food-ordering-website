@@ -22,15 +22,23 @@ interface ItemDetailModalProps {
 }
 
 export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps) {
-    const { addItemWithQuantity } = useCart();
+    const { items, addItemWithQuantity, setItemQuantity } = useCart();
     const [quantity, setQuantity] = useState(1);
     const [inputValue, setInputValue] = useState('1');
 
-    // Reset quantity when modal opens with new item
+    // Get the current quantity of this item from cart
+    const getCartQuantity = () => {
+        if (!item) return 1;
+        const cartItem = items.find(cartItem => cartItem.menuItem.id === item.id);
+        return cartItem ? cartItem.quantity : 1;
+    };
+
+    // Reset quantity when modal opens - check cart for existing quantity
     useEffect(() => {
-        if (isOpen) {
-            setQuantity(1);
-            setInputValue('1');
+        if (isOpen && item) {
+            const cartQty = getCartQuantity();
+            setQuantity(cartQty);
+            setInputValue(cartQty.toString());
         }
     }, [isOpen, item?.id]);
 
@@ -74,7 +82,12 @@ export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps)
     };
 
     const handleAddToCart = () => {
-        addItemWithQuantity(item, quantity);
+        const existingItem = items.find(cartItem => cartItem.menuItem.id === item.id);
+        if (existingItem) {
+            setItemQuantity(item.id, quantity);
+        } else {
+            addItemWithQuantity(item, quantity);
+        }
         onClose();
     };
 
@@ -84,7 +97,7 @@ export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps)
                 {/* Image Header */}
                 <div className="relative h-56 sm:h-64 overflow-hidden flex-shrink-0">
                     <img
-                        src={item.imageUrl}
+                        src={item.imageUrl || '/placeholder.svg'}
                         alt={item.name}
                         className="w-full h-full object-cover"
                     />
@@ -165,7 +178,9 @@ export function ItemDetailModal({ item, isOpen, onClose }: ItemDetailModalProps)
                         className="w-full btn-gradient py-6 text-lg"
                     >
                         <Plus className="w-5 h-5 mr-2" />
-                        Add {quantity} to Cart
+                        {items.some(cartItem => cartItem.menuItem.id === item.id) 
+                            ? `Update Cart (${quantity})` 
+                            : `Add ${quantity} to Cart`}
                     </Button>
                 </div>
             </DialogContent>

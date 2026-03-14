@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Star, ImageIcon, Save } from 'lucide-react';
 import { toast } from 'sonner';
+import { formatCurrency } from '@/lib/utils';
 
 interface MenuItem {
     id: string;
@@ -48,8 +49,8 @@ export default function FeaturedPage() {
             if (prev.includes(id)) {
                 return prev.filter((i) => i !== id);
             }
-            if (prev.length >= 3) {
-                toast.error('Maximum 3 featured items allowed');
+            if (prev.length >= 6) {
+                toast.error('Maximum 6 featured items allowed');
                 return prev;
             }
             return [...prev, id];
@@ -57,8 +58,8 @@ export default function FeaturedPage() {
     };
 
     const handleSave = async () => {
-        if (selectedIds.length !== 3) {
-            toast.error('Please select exactly 3 featured items');
+        if (selectedIds.length !== 6) {
+            toast.error('Please select exactly 6 featured items');
             return;
         }
 
@@ -91,12 +92,12 @@ export default function FeaturedPage() {
                         Featured Items
                     </h2>
                     <p className="text-zinc-600 dark:text-zinc-400">
-                        Select exactly 3 items to feature on the homepage &quot;Chef&apos;s Selection&quot; section
+                        Select exactly 6 items to feature on the homepage &quot;Chef&apos;s Selection&quot; section
                     </p>
                 </div>
                 <Button
                     onClick={handleSave}
-                    disabled={saving || selectedIds.length !== 3}
+                    disabled={saving || selectedIds.length !== 6}
                     className="bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700"
                 >
                     <Save className="h-4 w-4 mr-2" />
@@ -107,8 +108,8 @@ export default function FeaturedPage() {
             <Card className="border-0 shadow-lg">
                 <CardHeader>
                     <CardTitle className="flex items-center justify-between">
-                        <span>Select Items ({selectedIds.length}/3)</span>
-                        {selectedIds.length === 3 && (
+                        <span>Select Items ({selectedIds.length}/6)</span>
+                        {selectedIds.length === 6 && (
                             <span className="text-sm font-normal text-green-600">Ready to save!</span>
                         )}
                     </CardTitle>
@@ -160,8 +161,9 @@ export default function FeaturedPage() {
                                                     className="w-full h-full object-cover"
                                                 />
                                             ) : (
-                                                <div className="w-full h-full flex items-center justify-center">
-                                                    <ImageIcon className="h-8 w-8 text-zinc-400" />
+                                                <div className="w-full h-full flex flex-col items-center justify-center text-zinc-400">
+                                                    <ImageIcon className="h-8 w-8 mb-1" />
+                                                    <span className="text-xs">No image</span>
                                                 </div>
                                             )}
                                         </div>
@@ -174,7 +176,7 @@ export default function FeaturedPage() {
                                                     {item.categories?.name || 'Uncategorized'}
                                                 </span>
                                                 <span className="font-medium text-orange-500">
-                                                    ${item.price.toFixed(2)}
+                                                    {formatCurrency(item.price)}
                                                 </span>
                                             </div>
                                         </div>

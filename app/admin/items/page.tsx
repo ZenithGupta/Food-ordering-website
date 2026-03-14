@@ -47,8 +47,9 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, Pencil, Trash2, Upload, X, ImageIcon, GripVertical, ChevronUp, ChevronDown } from 'lucide-react';
+import { Plus, Pencil, Trash2, Upload, X, ImageIcon, GripVertical, ChevronUp, ChevronDown, Search } from 'lucide-react';
 import { toast } from 'sonner';
+import { formatCurrency } from '@/lib/utils';
 
 interface Category {
     id: string;
@@ -117,8 +118,9 @@ function SortableRow({ item, index, total, onEdit, onDelete, onMoveUp, onMoveDow
                             className="w-full h-full object-cover"
                         />
                     ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                            <ImageIcon className="h-5 w-5 text-zinc-400" />
+                        <div className="w-full h-full flex flex-col items-center justify-center text-zinc-400 text-xs">
+                            <ImageIcon className="h-4 w-4 mb-0.5" />
+                            <span>No image</span>
                         </div>
                     )}
                 </div>
@@ -135,7 +137,7 @@ function SortableRow({ item, index, total, onEdit, onDelete, onMoveUp, onMoveDow
                 {item.categories?.name || 'Unknown'}
             </TableCell>
             <TableCell className="font-medium">
-                ${item.price.toFixed(2)}
+                {formatCurrency(item.price)}
             </TableCell>
             <TableCell>
                 <span
@@ -207,6 +209,7 @@ export default function ItemsPage() {
     const [formData, setFormData] = useState(defaultFormData);
     const [uploading, setUploading] = useState(false);
     const [filterCategory, setFilterCategory] = useState<string>('all');
+    const [searchName, setSearchName] = useState<string>('');
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const sensors = useSensors(
@@ -240,9 +243,13 @@ export default function ItemsPage() {
 
     const openCreateDialog = () => {
         setEditingItem(null);
+        // Use the currently selected filter category, or first category if "all"
+        const defaultCategory = filterCategory !== 'all' 
+            ? filterCategory 
+            : (categories[0]?.id || '');
         setFormData({
             ...defaultFormData,
-            category_id: categories[0]?.id || '',
+            category_id: defaultCategory,
         });
         setDialogOpen(true);
     };
@@ -337,9 +344,11 @@ export default function ItemsPage() {
         }
     };
 
-    const filteredItems = filterCategory === 'all'
-        ? items
-        : items.filter((item) => item.category_id === filterCategory);
+    const filteredItems = items.filter((item) => {
+        const matchesCategory = filterCategory === 'all' || item.category_id === filterCategory;
+        const matchesSearch = searchName === '' || item.name.toLowerCase().includes(searchName.toLowerCase());
+        return matchesCategory && matchesSearch;
+    });
 
     const saveOrder = async (newItems: MenuItem[]) => {
         try {
@@ -436,7 +445,16 @@ export default function ItemsPage() {
                         Drag to reorder or use ↑↓ buttons
                     </p>
                 </div>
-                <div className="flex gap-2 w-full sm:w-auto">
+                <div className="flex gap-2 w-full sm:w-auto flex-wrap">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400" />
+                        <Input
+                            placeholder="Search by name..."
+                            value={searchName}
+                            onChange={(e) => setSearchName(e.target.value)}
+                            className="pl-9 w-full sm:w-[200px]"
+                        />
+                    </div>
                     <Select value={filterCategory} onValueChange={setFilterCategory}>
                         <SelectTrigger className="w-full sm:w-[180px]">
                             <SelectValue placeholder="Filter by category" />
