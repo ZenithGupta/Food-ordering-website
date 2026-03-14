@@ -349,18 +349,6 @@ export default function CategoriesPage() {
                                     required
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="slug">Slug</Label>
-                                <Input
-                                    id="slug"
-                                    value={formData.slug}
-                                    onChange={(e) =>
-                                        setFormData((prev) => ({ ...prev, slug: e.target.value }))
-                                    }
-                                    placeholder="e.g., party-services"
-                                    required
-                                />
-                            </div>
                             <div className="flex items-center justify-between">
                                 <Label htmlFor="is_active">Active</Label>
                                 <Switch

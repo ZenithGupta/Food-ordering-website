@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
 import { MenuItem } from '@/lib/types';
 
-export const MAX_QUANTITY = 999;
+export const MAX_QUANTITY = 9999;
 
 export interface CartItem {
   menuItem: MenuItem;
@@ -18,6 +18,7 @@ interface CartState {
 type CartAction =
   | { type: 'ADD_ITEM'; payload: MenuItem }
   | { type: 'ADD_ITEM_WITH_QUANTITY'; payload: { item: MenuItem; quantity: number } }
+  | { type: 'SET_ITEM_QUANTITY'; payload: { id: string; quantity: number } }
   | { type: 'REMOVE_ITEM'; payload: string }
   | { type: 'UPDATE_QUANTITY'; payload: { id: string; quantity: number } }
   | { type: 'CLEAR_CART' }
@@ -76,6 +77,31 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       };
     }
 
+    case 'SET_ITEM_QUANTITY': {
+      if (action.payload.quantity <= 0) {
+        return {
+          ...state,
+          items: state.items.filter(item => item.menuItem.id !== action.payload.id),
+        };
+      }
+
+      const clampedQuantity = Math.min(action.payload.quantity, MAX_QUANTITY);
+      const existingIndex = state.items.findIndex(
+        item => item.menuItem.id === action.payload.id
+      );
+
+      if (existingIndex >= 0) {
+        const updatedItems = [...state.items];
+        updatedItems[existingIndex] = {
+          ...updatedItems[existingIndex],
+          quantity: clampedQuantity,
+        };
+        return { ...state, items: updatedItems };
+      }
+
+      return state;
+    }
+
     case 'REMOVE_ITEM': {
       return {
         ...state,
@@ -129,6 +155,7 @@ interface CartContextType {
   isOpen: boolean;
   addItem: (item: MenuItem) => void;
   addItemWithQuantity: (item: MenuItem, quantity: number) => void;
+  setItemQuantity: (id: string, quantity: number) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
@@ -175,6 +202,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     dispatch({ type: 'ADD_ITEM_WITH_QUANTITY', payload: { item, quantity } });
   };
 
+  const setItemQuantity = (id: string, quantity: number) => {
+    dispatch({ type: 'SET_ITEM_QUANTITY', payload: { id, quantity } });
+  };
+
   const removeItem = (id: string) => {
     dispatch({ type: 'REMOVE_ITEM', payload: id });
   };
@@ -209,6 +240,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         isOpen: state.isOpen,
         addItem,
         addItemWithQuantity,
+        setItemQuantity,
         removeItem,
         updateQuantity,
         clearCart,

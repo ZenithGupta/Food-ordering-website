@@ -10,7 +10,6 @@ import {
     FolderTree,
     UtensilsCrossed,
     LogOut,
-    Menu,
     X,
     ChevronRight,
     ChevronLeft,
@@ -181,19 +180,6 @@ export default function AdminLayout({
                 'transition-all duration-300',
                 isCollapsed ? 'lg:pl-16' : 'lg:pl-72'
             )}>
-                {/* Top bar */}
-                <header className="sticky top-0 z-30 h-16 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 flex items-center px-4 lg:px-8">
-                    <button
-                        onClick={() => setSidebarOpen(true)}
-                        className="lg:hidden p-2 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg mr-4"
-                    >
-                        <Menu className="h-5 w-5" />
-                    </button>
-                    <h1 className="text-lg font-semibold">
-                        {navigation.find((item) => item.href === pathname)?.name || 'Admin'}
-                    </h1>
-                </header>
-
                 {/* Page content */}
                 <main className="p-4 lg:p-8">{children}</main>
             </div>

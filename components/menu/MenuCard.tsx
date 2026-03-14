@@ -37,7 +37,7 @@ export function MenuCard({ item }: MenuCardProps) {
         {/* Image - fixed height */}
         <div className="relative h-32 sm:h-36 overflow-hidden flex-shrink-0">
           <img
-            src={item.imageUrl}
+            src={item.imageUrl || '/placeholder.svg'}
             alt={item.name}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
           />

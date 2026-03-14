@@ -2,8 +2,7 @@ import type { Metadata } from 'next';
 import { Cormorant_Garamond, Outfit } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
+import ClientLayout from './client-layout';
 
 const cormorant = Cormorant_Garamond({
     subsets: ['latin'],
@@ -46,9 +45,9 @@ export default function RootLayout({
         <html lang="en" className={`dark ${cormorant.variable} ${outfit.variable}`}>
             <body className="font-sans antialiased">
                 <Providers>
-                    <Navbar />
-                    {children}
-                    <Footer />
+                    <ClientLayout>
+                        {children}
+                    </ClientLayout>
                 </Providers>
             </body>
         </html>
